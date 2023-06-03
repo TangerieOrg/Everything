@@ -20,10 +20,24 @@ ${extraData}
 Content-Type:
 `;
 
-
+const SAMPLE = {
+    contentType: "text/html",
+    text: `
+    <html><head>
+    <title>Everything Contents</title>
+    </head>
+    <body>
+        <h1>Everything Contents</h1>
+        <ul>
+        <li><a href="/overview">Overview</a></li>
+        <li><a href="/details">Details</a></li>
+        <li><a href="/reviews">Reviews</a></li>
+        </ul>
+    </body></html>
+`
+}
 
 const createResponse = async (path: string, extraData = "") => {
-
     const data = (await openai.createCompletion({
         model: "text-davinci-003",
         prompt: createPrompt(path, extraData),

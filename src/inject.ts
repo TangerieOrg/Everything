@@ -24,8 +24,21 @@ const injectHeader = ($: cheerio.CheerioAPI) => {
 `);
 }
 
+export const fixURLs = ($: cheerio.CheerioAPI) => {
+    if(BASE_URL.length === 0 || BASE_URL === '/') return;
+
+    $('a').each((i, el) => {
+        const href = el.attribs['href'];
+        if(href.startsWith('/') && !href.startsWith(BASE_URL)) {
+            el.attribs['href'] = `${BASE_URL}${href}`;
+        }
+    })
+}
+
 export const injectHTML = (html: string) => {
     const $ = cheerio.load(cheerio.load(html).html());
+
+    fixURLs($);
 
     const currentHTML = $('body').html()!;
 
@@ -41,8 +54,6 @@ export const injectHTML = (html: string) => {
             </div>
             <div class="col-2"></div>
         </div>
-
-        
     </div>`);
 
     const container = $('#content');
