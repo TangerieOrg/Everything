@@ -1,0 +1,23 @@
+name: Production Build
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/docker-build-push.yml
+    with:
+      image_name: everything
+      registry_name: docker.tangerie.xyz
+      ref: main
+    secrets: inherit
+    
+  deploy:
+    uses: ./.github/workflows/docker-deploy.yml
+    needs: build
+    with:
+      image_name: everything
+      registry_name: docker.tangerie.xyz
+    secrets: inherit

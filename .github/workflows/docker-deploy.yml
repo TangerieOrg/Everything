@@ -1,0 +1,39 @@
+name: (Resuable) Docker compose deploy
+
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        description: "The base name of the image (not including tags or registry)"
+        default: "ERROR"
+        required: true
+        type: string
+      registry_name:
+        description: "The name of the registry"
+        default: "ERROR"
+        required: true
+        type: string
+      compose_file_path:
+        description: "Path of compose file"
+        default: "docker-compose.yml"
+        required: false
+        type: string
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+
+env:
+  IMAGE_NAME: ${{inputs.registry_name}}/${{inputs.image_name}}
+
+jobs:
+  docker-deploy:
+    name: Deploys docker image to swarm
+    runs-on: [self-hosted, media]
+    steps:
+      - name: Pull repo
+        uses: actions/checkout@v3
+
+      - name: Run image
+        run: docker stack deploy -c ${{inputs.compose_file_path}} ${{inputs.image_name}}

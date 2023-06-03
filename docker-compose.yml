@@ -1,0 +1,8 @@
+version: '3'
+services:
+  everything:
+    ports:
+      - 8881:80
+    image: ${IMAGE_NAME}:latest
+    deploy:
+      replicas: 1
