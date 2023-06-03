@@ -2,10 +2,11 @@ import express from "express";
 import dotenv from 'dotenv';
 import { everythingRoute } from "./core";
 import path from "path";
+import { BASE_URL } from "./var";
 
 dotenv.config();
 
-const BASE_URL = process.env.BASE_URL ?? '/';
+
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(express.urlencoded({
 }));
 
 app.use((req, res, next) => {
-    if(req.url.replace(BASE_URL, "").replace("/", "").trim().length === 0) {
+    if(req.url.replace("/", "").trim().length === 0) {
         let contentsURL = BASE_URL;
         if(!contentsURL.endsWith("/")) contentsURL += '/';
         contentsURL += 'contents';
@@ -37,13 +38,10 @@ app.use((req, res, next) => {
     next();
 });
 
-const everything = express();
-
-everything.post("*", everythingRoute);
-everything.get("*", everythingRoute);
+app.post("*", everythingRoute);
+app.get("*", everythingRoute);
 
 
-app.use(BASE_URL, everything);
 
 
 const port = process.env.EXPRESS_PORT ?? 80;
