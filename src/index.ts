@@ -21,7 +21,7 @@ everything.get("*", everythingRoute);
 app.use(process.env.BASE_URL ?? '', everything);
 
 
-const port = process.env.PORT || 8080;
+const port = process.env.EXPRESS_PORT || 80;
 
 app.listen(port, () => {
     console.log("Listening on port", port);
