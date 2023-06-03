@@ -17,7 +17,7 @@ app.use(express.urlencoded({
 }));
 
 app.use((req, res, next) => {
-    if(req.url.replace("/", "").trim().length === 0) {
+    if(req.url.replace(BASE_URL, "").replace("/", "").trim().length === 0) {
         let contentsURL = BASE_URL;
         if(!contentsURL.endsWith("/")) contentsURL += '/';
         contentsURL += 'contents';
@@ -37,15 +37,7 @@ app.use((req, res, next) => {
     next();
 });
 
-
-
 const everything = express();
-
-// @ts-ignore
-// const DISALLOWED = (req, res) => res.send("");
-
-// everything.get("*.js", DISALLOWED);
-// everything.post("*.js", DISALLOWED);
 
 everything.post("*", everythingRoute);
 everything.get("*", everythingRoute);
