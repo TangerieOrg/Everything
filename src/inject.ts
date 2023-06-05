@@ -36,6 +36,7 @@ export const fixURLs = ($: cheerio.CheerioAPI) => {
 
     $('form').each((i, el) => {
         const action = el.attribs['action'];
+        el.attribs['method'] = 'get';
         if(!action) return;
         if(action.startsWith('/') && !action.startsWith(BASE_URL + '/')) {
             el.attribs['action'] = `${BASE_URL}${action}`;
