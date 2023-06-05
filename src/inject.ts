@@ -29,10 +29,17 @@ export const fixURLs = ($: cheerio.CheerioAPI) => {
 
     $('a').each((i, el) => {
         const href = el.attribs['href'];
-        if(href.startsWith('/') && !href.startsWith(BASE_URL)) {
+        if(href.startsWith('/') && !href.startsWith(BASE_URL + '/')) {
             el.attribs['href'] = `${BASE_URL}${href}`;
         }
     })
+
+    $('form').each((i, el) => {
+        const action = el.attribs['action'];
+        if(action.startsWith('/') && !action.startsWith(BASE_URL + '/')) {
+            el.attribs['action'] = `${BASE_URL}${action}`;
+        }
+    });
 }
 
 export const injectHTML = (html: string) => {
